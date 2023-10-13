@@ -2,7 +2,7 @@ class Parser < Hamster::Parser
   def parse(lawyers)
     data               = []
     def delete_spaces(text)
-      text.gsub(/[[:space:]]/, ' ').gsub('    ', ' ').gsub('   ', ' ').gsub('  ', ' ')
+      text.gsub(/[[:space:]]/, ' ').squeeze(' ')
     end
     lawyers.each do |law_r|
       source  = "https://api-proxy.azbar.org/MemberSearch/Search?EntityNumber=#{law_r['EntityNumber']}&RequestorEntityNumber=undefined&{}"
