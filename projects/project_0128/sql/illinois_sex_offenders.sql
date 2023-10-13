@@ -1,0 +1,35 @@
+ CREATE TABLE IF NOT EXISTS illinois_sex_offenders(
+  `id` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+  `year` varchar (255),
+  `full_name` varchar (255),
+  `first_name` varchar (255),
+  `middle_name` varchar (255),
+  `last_name` varchar (255),
+  `status` varchar(255),
+  `date_of_birth` DATE, 
+  `height` varchar (255),illinois_sex_offenders_runs
+  `weight` varchar (255),
+  `sex` varchar (255),
+  `race` varchar(255),
+  `full_address` varchar (255),
+  `address1` varchar (255),
+  `address2` varchar (255),
+  `city` varchar (255),
+  `state` varchar (255),
+  `zip` varchar (255),
+  `title` varchar(255),
+  `residence_county` varchar(255),
+  `victim_age_at_time_of_offense` varchar(255),
+  `offender_age_at_time_of_offense` varchar(255),
+  `county_of_conviction` varchar(255),
+  `data_source_url` VARCHAR(255) DEFAULT "https://isp.illinois.gov/Sor/DownloadCSV",
+  `md5_hash` varchar(255),
+  `run_id` int,
+  `deleted` int DEFAULT 0,
+  `created_by`           VARCHAR(255)       DEFAULT 'Adeel',
+  `created_at`           DATETIME           DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `unique_data` (`md5_hash`)
+)DEFAULT CHARSET = `utf8mb4`
+COLLATE = utf8mb4_unicode_520_ci;
+illinois_sex_offenders_runs

@@ -1,0 +1,1 @@
+ALTER TABLE pr_com_articles MODIFY COLUMN contact_info VARCHAR(500);

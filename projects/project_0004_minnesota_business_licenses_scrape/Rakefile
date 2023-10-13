@@ -1,0 +1,27 @@
+# frozen_string_literal: true
+
+require_relative '../../lib/storage'
+
+namespace :db do
+  storage    = Storage.new
+  db_config  = storage.db13
+  db_current = db_config.merge(database: 'test_hle_art_jarocki')
+  
+  desc "Migrate the database"
+  task :migrate do
+    ActiveRecord::Base.establish_connection(db_current)
+    ActiveRecord::MigrationContext.new("db/migrate/", ActiveRecord::SchemaMigration).migrate
+    Rake::Task["db:schema"].invoke
+    puts "Database migrated."
+  end
+  
+  desc 'Create a db/schema.rb file that is portable against any DB supported by AR'
+  task :schema do
+    ActiveRecord::Base.establish_connection(db_current)
+    require 'active_record/schema_dumper'
+    filename = "db/schema.rb"
+    File.open(filename, "w:utf-8") do |file|
+      ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, file)
+    end
+  end
+end

@@ -1,0 +1,35 @@
+# Ignore bundler config.
+/.bundle
+
+# Ignore all logfiles and tempfiles.
+/log/*
+!/log/.keep
+
+# Ignore git's files
+/.git
+
+# Ignore RubyMine's files
+/.idea
+
+# Ignore Vim's files
+/*.vim
+
+# Gemfile.lock
+/Gemfile.lock
+/vendor
+
+.ruby-gemset
+
+.docker_history
+hamster
+projects/project_*/docker-compose.yaml*
+unexpected_tasks/**/*-compose.yaml
+projects/project_0000
+unexpected_tasks/test_task
+
+/docker/pdf2htmlEX
+secrets/config.yml
+secrets/master.key
+secrets/credentials.yml
+secrets/test_key_rspec.key
+.DS_Store

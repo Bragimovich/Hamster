@@ -1,0 +1,32 @@
+CREATE TABLE `police_departments`
+(
+  `id`              BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+  `run_id`          BIGINT(20),
+  `name`            varchar(255)   null,
+  `type`            varchar(255)   null,
+  `location`        varchar(255)   null,
+  `country`         varchar(255)   null,
+  `address`         varchar(255)   null,
+  `city`            varchar(255)   null,
+  `state`           varchar(255)   null,
+  `zip`             varchar(255)   null,
+  `county`          varchar(255)   null,
+  `phone_number`    varchar(255)   null,
+  `fax_number`      varchar(255)   null,
+  `population_served`  varchar(255)   null,
+  `number_of_officers`  varchar(255)   null,
+  `website`         VARCHAR(255),
+  `data_source_url` VARCHAR(255),
+  `created_by`      VARCHAR(255)      DEFAULT 'Abdur Rehman',
+  `created_at`      DATETIME          DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `touched_run_id`  BIGINT,
+  `deleted`         BOOLEAN           DEFAULT 0,
+  `md5_hash`        VARCHAR(255),
+  UNIQUE KEY `md5` (`md5_hash`),
+  INDEX `run_id` (`run_id`),
+  INDEX `touched_run_id` (`touched_run_id`),
+  INDEX `deleted` (`deleted`),
+  KEY `id` (`id`)
+) DEFAULT CHARSET = `utf8mb4`
+  COLLATE = utf8mb4_unicode_520_ci;

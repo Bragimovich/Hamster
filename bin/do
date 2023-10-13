@@ -1,0 +1,153 @@
+#!/usr/bin/env bash
+
+# ↓↓↓DEFAULTS↓↓↓
+instances=1
+single_mode=1
+clone=0
+cpus=1
+memory=500
+let "memory_swap = $memory * 3"
+memory_reservation=200
+restart_mode='on-failure'
+restart_retries=0
+# ↑↑↑DEFAULTS↑↑↑
+
+help="
+Usage: hamster do PROJECT_NAME [ARGUMENT]…
+   or: hamster do PROJECT_NUMBER --settings='{\"Some\":\"JSON\"}' [ARGUMENT]…
+   or: hamster do help
+
+Runs hamster do with your project's name, settings, and arguments you've entered.
+
+Settings:
+      total_instances   the number of instances of a container runned in the Docker detach mode, default: 1
+      retries_number    the number of attemptions to restart a faild container, default: 1
+"
+
+if [ -z "$1" ] ; then
+  echo -ne "\033[31mError: It necessary to put the project name and needed parameters after that!\033[0m\n" >&2
+  echo "$help"
+
+  exit 1
+fi
+
+if [[ $1 == help ]] ; then
+  echo "$help"
+
+  exit 0
+fi
+
+re='^[a-z][_a-z0-9]+/[a-z][_a-z0-9]+'
+task=$1
+task_dir=$(echo $task | cut -d '/' -f 1)
+task_file=$(echo $task | cut -d '/' -f 2)
+task_name=${task_dir}__$task_file
+
+shift
+
+if ! [[ $task =~ $re ]] ; then
+  echo -ne "\033[31mError: Not a task name\033[0m\n" >&2
+  echo "$help"
+
+  exit 1
+fi
+
+# Run the new instance with --clone command
+# Example: hamster do 999 --clone 2nd
+index_in=1
+for arg in "$@"
+do
+  index_in=$(expr ${index_in} + 1)
+  if [[ "$arg" == "--clone" ]]
+  then
+    clone=${!index_in}
+  fi
+done
+
+settings=$1
+
+settings=$(echo ${settings} | grep -o '\--settings=.*')
+
+if [[ $settings ]] ; then
+  if [[ $(echo $settings | cut -d\= -f2 | jq -e 'has("total_instances")') == 'true' ]] ; then
+    instances=$(echo $settings | cut -d\= -f2 | jq .'total_instances')
+    if [[ $instances > 1 ]] ; then single_mode=0 ; fi
+  fi
+
+  if [[ $(echo $settings | cut -d\= -f2 | jq -e 'has("retries_number")') == 'true' ]] ; then
+    restart_retries=$(echo $settings | cut -d\= -f2 | jq .'retries_number')
+    if [[ $restart_retries < 0 ]] ; then restart_retries=0 ; fi
+  fi
+
+  if [[ $(echo $settings | cut -d\= -f2 | jq -e 'has("memory_size")') == 'true' ]] ; then
+    memory=$(echo $settings | cut -d\= -f2 | jq .'memory_size')
+    if [[ $memory < 200 ]] ; then memory=200 ; fi
+  fi
+
+  if [[ $(echo $settings | cut -d\= -f2 | jq -e 'has("cpu_count")') == 'true' ]] ; then
+    cpus=$(echo $settings | cut -d\= -f2 | jq .'cpu_count')
+    if [[ $cpus < 1 ]] ; then cpus=1 ; fi
+  fi
+
+  shift
+fi
+
+config=${HOME}/ini/Hamster
+project=$(cat $HOME/.config/hamster/local.path)
+version=$(cat ${project}/docker/VERSION)
+task_name=${task_dir}_${task_file}
+options=$@
+container=hamster_do_$task_name
+container_list=$(docker ps --filter name=${container} --filter status=exited --filter status=dead -a -q)
+
+if [[ $restart_retries == 0 ]] ; then restart_mode=no ; else restart_mode=$restart_mode:$restart_retries ; fi
+
+if [[ $container_list ]] ; then docker rm --force $container_list ; fi
+
+if [[ $single_mode == 1 ]] ; then
+  container_name=${container}-${clone}
+
+  docker run \
+    -v $config:/home/hamster/ini/Hamster \
+    -v $project:/home/hamster/Hamster \
+    -v hamster_vol_storage:/home/hamster/HarvestStorehouse \
+    --log-driver json-file \
+    --log-opt max-size=1m \
+    --log-opt max-file=1 \
+    --cpus=1 \
+    --memory=${memory}m \
+    --memory-swap=${memory_swap}m \
+    --memory-reservation=${memory_reservation}m \
+    --restart=${restart_mode} \
+    --name $container_name \
+    hamster:v$version \
+    ruby hamster.rb --do=$task_dir/$task_file --clone=$clone --single $options
+
+  exit $?
+fi
+
+if [[ $instances > 0 ]] ; then let 'max = instances - 1' ; else let 'max = 0' ; fi
+for instance in $(seq 0 $max)
+do
+  container_name=${container}-${instance}
+
+  docker run \
+    -v $config:/home/hamster/ini/Hamster \
+    -v $project:/home/hamster/Hamster \
+    -v hamster_vol_storage:/home/hamster/HarvestStorehouse \
+    --log-driver json-file \
+    --log-opt max-size=1m \
+    --log-opt max-file=1 \
+    --cpus=1 \
+    --memory=${memory}m \
+    --memory-swap=${memory_swap}m \
+    --memory-reservation=${memory_reservation}m \
+    --restart=${restart_mode} \
+    --name $container_name \
+    --detach \
+    hamster:v$version \
+    ruby hamster.rb --do=$task_dir/$task_file --clone=${instance} --instance=$instance --instances=$instances $options
+done
+
+exit $?
+

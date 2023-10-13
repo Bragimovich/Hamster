@@ -1,0 +1,138 @@
+#!/usr/bin/env bash
+
+help="
+Usage: hamster dig PROJECT_NUMBER
+   or: hamster dig TASK_NAME
+   or: hamster dig help
+
+Runs hamster dig with your project's number or task's name."
+
+if [ -z "$1" ] ; then
+  echo -ne "\033[31mError: It necessary to put the project number or the task name and needed parameters after that!\033[0m\n" >&2
+  echo "$help"
+
+  exit 1
+fi
+
+if [[ $1 == help ]] ; then
+  echo "$help"
+
+  exit 0
+fi
+
+re_pn='^[0-9]+$'
+re_ut='^[a-z][_a-z0-9]+/[a-z][_a-z0-9]+'
+task=$1
+hamster_dir=$(cat $HOME/.config/hamster/local.path)
+
+shift
+
+if [[ $task =~ $re_pn ]] ; then
+  number=$(printf %04d $task)
+  templates_dir=${hamster_dir}templates
+  root_dir=${hamster_dir}projects/project_$number
+  folders=(lib models sql)
+
+  mkdir $root_dir
+  echo Created $root_dir/
+
+  for folder in ${folders[@]} ; do
+    mkdir $root_dir/$folder
+    echo Created $root_dir/$folder/
+    case $folder in
+      sql)
+        cp $templates_dir/default*.sql $root_dir/$folder
+        echo Created $root_dir/$folder/default.sql
+        echo Created $root_dir/$folder/default_runs.sql
+        ;;
+      *)
+        touch $root_dir/$folder/.gitkeep
+        echo Created $root_dir/$folder/.gitkeep
+        ;;
+    esac
+  done
+
+  if [ ! -f $root_dir/scrape.rb ] ; then cp $templates_dir/scrape.rb $root_dir ; fi
+  if [ ! -f $root_dir/README.md ] ; then cp $templates_dir/README.md $root_dir ; fi
+
+elif [[ $task =~ $re_ut ]] ; then
+  task_dir=$(echo $task | cut -d '/' -f 1)
+  task_file=$(echo $task | cut -d '/' -f 2)
+
+  case $(uname -s) in
+    *[Dd]arwin* | *BSD* )
+      module=$(ruby -e 'puts ARGV[0].split("_").map{|w| w.capitalize}.join' $task_dir)
+      class=$(ruby -e 'puts ARGV[0].split("_").map{|w| w.capitalize}.join' $task_file)
+      ;;
+    *) 
+      module=$(echo $task_dir | sed "s/^./\u&/; s/_\(.\)/\u\1/g")
+      class=$(echo $task_file | sed "s/^./\u&/; s/_\(.\)/\u\1/g")
+      ;;
+  esac
+
+  mkdir -p ${hamster_dir}unexpected_tasks/$task_dir
+
+  task_ep="# frozen_string_literal: true
+
+  module UnexpectedTasks
+    module $module
+      class $class
+        def self.run(**options)
+          puts <<~GREETING
+            If you see this message, then the project's setup went good.
+
+            The variable \`options\` contains the list of passed arguments. Right now,
+            it contains the following:
+
+          GREETING
+
+          pp options
+
+          puts <<~GREETING
+
+            If you need to pass some specific arguments, you can do it using usual format:
+
+              --argument
+
+            or
+
+              --argument=value
+
+            The first one will contain \`true\` as value, the second will contain passed value.
+
+            Now you can open and edit the \`$task_file.rb\` file at your project's directory,
+            according to your task.
+          GREETING
+        end
+      end
+    end
+  end"
+
+  case $(uname -s) in
+    *[Dd]arwin* | *BSD* )
+      task_ep=$(ruby -e 'puts ARGV[0].split("\n").map{|r| r.sub(/^  /, "")}.join("\n")' "$task_ep")
+      ;;
+    *) 
+      task_ep=$(echo "$task_ep" | sed "s/^\(  \)\(.*\)/\2/g")
+      ;;
+  esac
+
+  if [ ! -f ${hamster_dir}unexpected_tasks/$task.rb ] ; then
+    echo "$task_ep" > ${hamster_dir}unexpected_tasks/$task.rb
+  fi
+else
+  echo -ne "\033[31mError: Not a project number or a task name\033[0m\n" >&2
+  echo "$help"
+
+  exit 1
+fi
+
+hamster build
+
+echo
+echo -en "\033[33mNow try to open $root_dir/scrape.rb with your code editor or IDE,\n"
+echo -en "write your code there and run it using hamster grab.\033[0m\n"
+echo
+
+exit 0
+

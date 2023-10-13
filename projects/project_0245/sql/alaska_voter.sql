@@ -1,0 +1,37 @@
+create table `alaska_voter_registrations`
+(
+  `id`                    INT auto_increment   primary key,
+  `full_date`                  DATE,
+  `year`            BIGINT(255),
+  `month`          BIGINT(255), 
+  `data_source_url`  VARCHAR(255),
+  `link`             VARCHAR(255),
+  `district`           VARCHAR(255),
+  `precinct`           VARCHAR(255),
+  `total`           VARCHAR(255),
+  `independence_party`           VARCHAR(255),
+  `democratic_party`     VARCHAR(255),
+  `republican_party`           VARCHAR(255),
+  `constitution_party`           VARCHAR(255),
+  `freedomreform_party`           VARCHAR(255),
+  `moderate_party`       VARCHAR(255),
+  `green_party`       VARCHAR(255),
+  `owl_party`           VARCHAR(255),
+  `alliance_party`          VARCHAR(250),
+  `libertarian_party`            VARCHAR(255),
+  `progressive_party`          VARCHAR(255),
+  `patriots_party`           VARCHAR(255),
+  `veterans_party`           VARCHAR(255),
+  `uces_clowns_party`           VARCHAR(255),
+  `md5_hash` varchar(100) GENERATED ALWAYS AS (md5(CONCAT_WS('', full_date, year, month, district,precinct,  total, independence_party, democratic_party, republican_party, constitution_party, freedomreform_party, moderate_party, green_party, owl_party, alliance_party, libertarian_party, progressive_party, patriots_party, veterans_party, uces_clowns_party, nonpartisan, undeclared, link, data_source_url))) STORED,
+  `run_id`                INT,
+  `nonpartisan`           VARCHAR(255),
+  `undeclared`           VARCHAR(255),
+  `twelve_visions_party` VARCHAR(255),
+  `created_by`           VARCHAR(255)       DEFAULT 'Aqeel',
+  `created_at`           DATETIME           DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `unique_data` (`md5_hash`)
+)
+DEFAULT CHARSET = `utf8mb4`
+COLLATE = utf8mb4_unicode_520_ci;

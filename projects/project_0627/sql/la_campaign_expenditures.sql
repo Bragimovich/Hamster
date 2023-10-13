@@ -1,0 +1,32 @@
+CREATE TABLE `la_campaign_expenditures`
+(
+  `id`                           BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+  `run_id`                       Int,
+  `filer_name`                   VARCHAR (255),
+  `report`                       VARCHAR (255),
+  `report_link`                  VARCHAR (255),
+  `recipient_name`               VARCHAR (255),
+  `recipient_complete_address`   VARCHAR (255),
+  `recipient_address`            VARCHAR (255),
+  `recipient_city`               VARCHAR (255),
+  `recipient_state`              VARCHAR (255),
+  `recipient_zip`                VARCHAR (255),
+  `description`                  VARCHAR (255),
+  `filing_date`                  DATE,
+  `amount`                       DECIMAL (12,2),
+  `created_at`                   DATETIME          DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`                   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_by`                   VARCHAR(255)      DEFAULT 'Adeel',
+  `data_source_url`              VARCHAR(255)      DEFAULT 'https://www.ethics.la.gov/CampaignFinanceSearch/SearchResultsByExpenditures.aspx',
+  `source_updated_date`          DATE,
+  `scrape_frequency`             VARCHAR(255) DEFAULT 'Daily',
+  `last_scrape_date`             DATE,
+  `next_scrape_date`             DATE,
+  `md5_hash`                     Varchar(100) GENERATED ALWAYS AS (md5(concat_ws('', filer_name, report, report_link, recipient_name, recipient_complete_address, description, CAST(filing_date as CHAR), CAST(amount as CHAR)))) STORED,
+  `deleted`                      BOOLEAN DEFAULT 0,
+  INDEX `date_index` (`filing_date`),
+  INDEX `filer_index` (`filer_name`),
+  INDEX `report_index` (`report`),
+  INDEX `amount_index`(`amount`)
+)DEFAULT CHARSET = `utf8mb4`
+COLLATE = utf8mb4_unicode_520_ci;

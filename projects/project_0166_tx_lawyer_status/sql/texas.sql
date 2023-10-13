@@ -1,0 +1,33 @@
+create table `texas`
+(
+  `id`                    int auto_increment   primary key,
+  `run_id`                int,
+  `md5_hash`              VARCHAR (255),
+  `name`                  VARCHAR(255),
+  `bar_number`            VARCHAR(255),
+  `status`                VARCHAR(255),
+  `law_firm_name`         VARCHAR(255),
+  `law_firm_address`      VARCHAR(255),
+  `street_address`        VARCHAR(255),
+  `law_firm_state`        VARCHAR(255),
+  `law_firm_city`         VARCHAR(255),
+  `law_firm_county`       VARCHAR(255)  DEFAULT NULL,
+  `law_firm_zip`          VARCHAR(255),
+  `phone`                 VARCHAR(255),
+  `date_admitted`         date,
+  `profile_last_certified`date,
+  `sections`              text,
+  `link`                  VARCHAR(255),
+  `data_source_url`       VARCHAR(255)       DEFAULT 'https://www.texasbar.com/AM/Template.cfm?Section=Find_A_Lawyer&Template=/CustomSource/MemberDirectory/Search_Form_Client_Main.cfm&Find=0',
+  `practise_location`     VARCHAR(255),
+  `practise_info`         JSON,
+  `courts_of_admittance`  JSON,
+  `law_school`            JSON,
+  `public_disciplinary_history`  JSON,
+  `deleted`               BOOLEAN            DEFAULT 0,
+  `created_by`            VARCHAR(255)       DEFAULT 'Aqeel',
+  `created_at`            DATETIME           DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `unique_data` (`md5_hash`)
+)DEFAULT CHARSET = `utf8mb4`
+COLLATE = utf8mb4_unicode_520_ci;

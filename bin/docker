@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+config=${HOME}/ini/Hamster
+project=$(cat $HOME/.config/hamster/local.path)
+version=$(cat ${project}/docker/VERSION)
+
+docker run \
+  -v $config:/home/hamster/ini/Hamster \
+  -v $project:/home/hamster/Hamster \
+  -v hamster_vol_storage:/home/hamster/HarvestStorehouse \
+  --rm -it \
+  hamster:v$version \
+  /bin/sh
+
+exit 0
+

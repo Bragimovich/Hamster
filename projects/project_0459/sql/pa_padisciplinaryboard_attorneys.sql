@@ -1,0 +1,36 @@
+CREATE TABLE `pa_padisciplinaryboard_attorneys`
+(
+  `id`                  BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+  `run_id`              BIGINT(20),
+  `bar_number`          varchar(255)   DEFAULT null,
+  `name`                varchar(255)   DEFAULT null,
+  `first_name`          varchar(255)   DEFAULT null,
+  `last_name`           varchar(255)   DEFAULT null,
+  `middle_name`         varchar(255)   DEFAULT null,
+  `date_admited`        date  null,
+  `current_status`      varchar(255)   DEFAULT null,
+  `telephone`           varchar(255)   DEFAULT null,
+  `fax`                 varchar(255)   DEFAULT null,
+  `email`               varchar(255)   DEFAULT null,
+  `employer`            varchar(255)   DEFAULT null,
+  `address`             varchar(255)   DEFAULT null,
+  `law_firm_zip`        varchar(255)   DEFAULT null,
+  `law_firm_city`       varchar(255)   DEFAULT null,
+  `law_firm_state`      varchar(255)   DEFAULT null,
+  `law_firm_county`     varchar(255)   DEFAULT null,
+  `law_firm_country`    varchar(255)   DEFAULT null,
+  `judicial_district`   varchar(255)   DEFAULT null,
+  `data_source_url`     varchar(255)   null,
+  `md5_hash`            varchar(255),
+  `touched_run_id`      BIGINT(20),
+  `deleted`             boolean        DEFAULT 0,
+  `created_by`          VARCHAR(255)   DEFAULT 'Raza',
+  `created_at`          DATETIME       DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `unique_data` (`md5_hash`),
+  INDEX `run_id` (`run_id`),
+  INDEX `touched_run_id` (`touched_run_id`),
+  INDEX `deleted` (`deleted`)
+) DEFAULT CHARSET = `utf8mb4`
+  COLLATE = utf8mb4_unicode_520_ci;
+  COMMENT = 'Created by Raza Aslam, Task #459';

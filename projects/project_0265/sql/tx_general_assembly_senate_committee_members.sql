@@ -1,0 +1,23 @@
+CREATE TABLE IF NOT EXISTS `tx_general_assembly_senate_committee_members`(
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `run_id` INT DEFAULT NULL,
+  `committee_id` bigint(20) DEFAULT NULL,
+  `title` varchar(255),
+  `full_name` VARCHAR(255),
+  `first_name` VARCHAR(255),
+  `middle_name` VARCHAR(255),
+  `last_name` VARCHAR(255),
+  `md5_hash` varchar(255),
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `scrape_dev_name` varchar(255) DEFAULT "Adeel",
+  `scrape_frequency` varchar(255) DEFAULT "Daily",
+  `scrape_status` VARCHAR(255) DEFAULT "Live",
+  `pl_gather_task_id` bigint(20) DEFAULT 177970811,
+  `data_source_url` varchar(255),
+  `touched_run_id` int DEFAULT NULL,
+   `deleted` INT(1) default 0,
+  PRIMARY KEY (`id`),
+UNIQUE KEY `unique_records` (`md5_hash`),
+FOREIGN KEY (`committee_id`) REFERENCES `tx_general_assembly_senate_committees_temp`(`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1010341 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;

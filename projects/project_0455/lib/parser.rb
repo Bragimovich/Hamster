@@ -1,0 +1,105 @@
+require_relative '../lib/converter'
+
+class Parser < Hamster::Parser
+  attr_reader :html
+
+  def initialize
+    super
+    @dirty_news = []
+    @converter = Converter.new
+  end
+
+  def html=(html)
+    @html = Nokogiri::HTML(html)
+  end
+
+  # first values == default
+  # params[:css]                - nil                                      # needed values in css
+  # params[:type]               - 'text' / 'link' /'date' / 'html' / 'teaser' / 'time'
+  # params[:names_css]          - nil                                      # css to take values by their names, use with css
+  # params[:names]              - nil / ['Name', 'Phone']                  # use names_css
+  # params[:comments]           - nil / ['<!-- case caption -->', ...]     # take values after comments in html code
+  # params[:html]               - @html / @html.css('div.custom-contentTypeBlock')[-2]
+  # params[:downcase]           - false  / true
+  # params[:range]              - 0..-1 / [0..1, 3..-1] / -1 / 0
+  # params[:attribute]          - 'href' / 'value' / 'option' / 'on_click'
+  # params[:url_prefix]         - "" / "https://www.google.com"
+  # params[:clean]              - true / false
+  # params[:child]              - nil / 0
+  def elements_list(**params)
+    set_params(**params)
+
+    return [] if html.blank?
+
+    return values_by_names if @names_css && @names
+
+    data = html.css(@css)&.map.with_index do |elem, index|
+      elem = elem.children[@child] if @child
+      case @type
+      when 'text'
+        elem = @attribute != 'href' ? elem.attribute(@attribute).text : elem.text
+      when 'html'
+        elem = elem.to_html.to_s
+      when 'link'
+        elem = @converter.string_to_link(elem[@attribute].to_s, @url_prefix)
+      when 'date'
+        elem = @converter.string_to_date(elem.text)
+      when 'time'
+        elem = @converter.string_to_time(elem.text)
+      when 'teaser'
+        lang_tag = html.css('html').attribute('lang').text
+        @dirty_news[index] = 1
+        next unless lang_tag && lang_tag.include?("en")
+        next if elem.text.to_s.empty?
+        @dirty_news[index] = 0
+        elem = @converter.article_to_teaser(elem)
+      else
+        return
+      end
+      elem = elem&.downcase if @downcase
+      elem = @converter.clean_string(elem) if @clean
+      elem
+    end
+    @range.is_a?(Array) ? @range.map { |range| data[range] }.flatten : data[@range]
+  end
+
+  def set_params(**params)
+    @css = params[:css] || nil
+    @type = params[:type] || 'text'
+    @names_css = params[:names_css] || nil
+    @names = params[:names] || nil
+    @comments = params[:comments] || []
+    @html = params[:html] || @html
+    @downcase = params[:downcase] || false
+    @range = params[:range] || (0..-1)
+    @attribute = params[:attribute] || 'href'
+    @child = params[:child] || nil
+    @url_prefix = params[:url_prefix] || ""
+    @clean = params[:clean] || true
+  end
+
+  def values_by_names
+    @names.compact!
+    names_values = []
+    html.css(@names_css).each_with_index do |row, i|
+      if @names.include?(row.text)
+        index = @names.index(row.text)
+        names_values[index] ||= ""
+        names_values[index] += "#{@converter.clean_string(html.css(@css)[i].text)}, "
+      end
+    end
+    names_values.map do |elem|
+      elem.to_s.split(", ").reject(&:blank?).join(', ')
+    end
+  end
+
+  def find_unique_rows(html_arr, css)
+    unique_columns = []
+    html_arr.each do |html|
+      Nokogiri::HTML(html[0]).css(css).map do |row|
+        unique_columns << row.text unless unique_columns.include?(row.text)
+      end
+    end
+    unique_columns
+  end
+end

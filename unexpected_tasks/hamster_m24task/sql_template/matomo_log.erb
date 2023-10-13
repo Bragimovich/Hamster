@@ -1,0 +1,27 @@
+select
+idsite,
+profile_url,
+stat_date,
+count(*) as pageviews,
+count(distinct idvisitor) as users,
+count(distinct idvisit) as sessions,
+avg(avg_time) as avgTime /* not sure whether it is calculated properly there - EM */
+from (
+select lva.idvisit,
+convert_tz(lv.visit_first_action_time,'UTC','US/Central') as visit_first_action_time,
+convert_tz(lv.visit_last_action_time,'UTC','US/Central') as visit_last_action_time,
+lv.visit_total_actions,
+timestampdiff(second, convert_tz(lv.visit_first_action_time,'UTC','US/Central'), convert_tz(lv.visit_last_action_time,'UTC','US/Central'))/lv.visit_total_actions as avg_time,
+date(convert_tz(lva.server_time,'UTC','US/Central')) as stat_date, lva.idpageview, lva.idvisitor, lva.idsite, s.main_url as profile_url,
+lv.referer_name, lv.referer_type, lv.referer_url, lv.location_provider as networklocation, lv.location_country as country,
+lv.location_region as region, lv.location_city as city, la_url.name as pagepath, la_name.name as pagetitle, lva.idaction_url
+from matomo_log_link_visit_action lva
+join matomo_log_visit lv on lv.idvisit=lva.idvisit
+join matomo_log_action la_url on la_url.idaction = lva.idaction_url and la_url.type=1
+left join matomo_log_action la_name on la_name.idaction = lva.idaction_name and la_name.type = 4
+straight_join matomo_site s on s.idsite = lva.idsite
+where DATE(lva.server_time) BETWEEN '<%= (Date.parse(@stat_date) - 1 ).to_s %>' AND '<%= (Date.parse(@stat_date) + 1 ).to_s %>'
+group by lva.idlink_va
+) sq
+where stat_date = '<%= @stat_date %>'
+group by `idsite`;

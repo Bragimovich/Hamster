@@ -1,0 +1,36 @@
+CREATE TABLE `ct_higher_education_salaries`
+(
+  `id`                          BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+  `run_id`                      BIGINT(20),
+  `year`                        VARCHAR(255),
+  `name`                        VARCHAR(255),
+  `first_name`                  VARCHAR(255),
+  `middle_name`                 VARCHAR(255),
+  `last_name`                   VARCHAR(255),
+  `agency`                      VARCHAR(255),
+  `job_title`                   VARCHAR(255),
+  `total_pay`                   Decimal(12,2),
+  `salaries_and_wages`          Decimal(12,2),
+  `overtime_pay`                Decimal(12,2),
+  `other_pay`                   Decimal(12,2),
+  `non_retirement_fringe`       Decimal(12,2),
+  `sers_retirement_fringe`      Decimal(12,2),
+  `arp_retirement_fringe`       Decimal(12,2),
+  `data_source_url`             VARCHAR(255) DEFAULT 'https://openpayroll.ct.gov/#!/year/2022/secondary/UConn+-+Faculty',
+  `created_by`                  VARCHAR(255)      DEFAULT 'Aqeel',
+  `scrape_frequency`            VARCHAR(255)      DEFAULT 'Yearly',
+  `next_scrape_date`            DATE,
+  `last_scrape_date`            DATE,
+  `expected_scrape_frequency`   VARCHAR(255)      DEFAULT 'Yearly',
+  `created_at`                  DATETIME          DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`                  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `touched_run_id`              BIGINT,
+  `deleted`                     BOOLEAN           DEFAULT 0,
+  `md5_hash`                    VARCHAR(255) GENERATED ALWAYS AS (md5(CONCAT_WS('', year, name, agency, job_title, CAST(total_pay as CHAR), CAST(salaries_and_wages as CHAR), CAST(overtime_pay as CHAR), CAST(other_pay as CHAR), CAST(non_retirement_fringe as CHAR), CAST(sers_retirement_fringe as CHAR), CAST(arp_retirement_fringe as CHAR)))) STORED,
+  UNIQUE KEY `md5` (`md5_hash`),
+  INDEX `run_id` (`run_id`),
+  INDEX `touched_run_id` (`touched_run_id`),
+  INDEX `deleted` (`deleted`)
+) DEFAULT CHARSET = `utf8mb4`
+COLLATE = utf8mb4_unicode_520_ci
+COMMENT = 'Aqeel';

@@ -1,0 +1,37 @@
+CREATE TABLE `me_general_info`
+(
+  `id`              	BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+  `run_id`          	BIGINT(20),
+  `is_district`            tinyint(1)   null,
+  `district_id`            BIGINT(20)   null,
+  `number`        varchar(50)   null,
+  `name`         varchar(255)   null,
+  `type`            varchar(255)   null,
+  `low_grade`           varchar(255)   null,
+  `high_grade`             varchar(255)   null,
+  `charter`          varchar(255)   null,
+  `magnet`    varchar(255)   null,
+  `title_1_school`      varchar(255)   null,
+  `title_1_school_wide`  varchar(255)   null,
+  `nces_id`  varchar(50)   null,
+  `phone`         varchar(255),
+  `address`         varchar(255),
+  `city`         varchar(255),
+  `state`         varchar(255),
+  `zip`         varchar(255),
+  `zip_4`         varchar(255),
+  `data_source_url` varchar(255),
+  `created_by`      varchar(255)      DEFAULT 'Habib',
+  `created_at`      DATETIME          DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `touched_run_id`  BIGINT,
+  `deleted`         BOOLEAN           DEFAULT 0,
+  `md5_hash`        varchar(255),
+  UNIQUE KEY `md5` (`md5_hash`),
+  INDEX `run_id` (`run_id`),
+  INDEX `touched_run_id` (`touched_run_id`),
+  INDEX `deleted` (`deleted`),
+  KEY `id` (`id`)
+) DEFAULT CHARSET = `utf8mb4`
+  COLLATE = utf8mb4_unicode_520_ci;
+

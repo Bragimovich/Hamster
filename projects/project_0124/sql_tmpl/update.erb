@@ -1,0 +1,9 @@
+UPDATE Illinois SET deleted = 1 WHERE id in (SELECT id_i FROM ( SELECT I.id as id_i FROM Illinois_tmp LEFT JOIN Illinois I on  Illinois_tmp.uuid = I.uuid) as t1 WHERE id_i IS NOT NULL );
+INSERT INTO Illinois (run_id, name, former_names, law_firm_name, law_firm_address, law_firm_city_state_zip, phone, date_admitted, registration_status_raw, data_source_url, touched_run_id, md5_hash, uuid, city, state, authorized_to_practice, created_at, updated_at)
+SELECT
+    Illinois_tmp.run_id, Illinois_tmp.name, Illinois_tmp.former_names, Illinois_tmp.law_firm_name, Illinois_tmp.law_firm_address, Illinois_tmp.law_firm_city_state_zip, Illinois_tmp.phone, Illinois_tmp.date_admitted,
+    Illinois_tmp.registration_status_raw, Illinois_tmp.data_source_url,
+    Illinois_tmp.`touched_run_id`, Illinois_tmp.md5_hash, Illinois_tmp.uuid, Illinois_tmp.city, Illinois_tmp.state, Illinois_tmp.authorized_to_practice, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+FROM Illinois_tmp  ON DUPLICATE KEY UPDATE touched_run_id = <%= @run_id %>, deleted = 0, updated_at = CURRENT_TIMESTAMP;
+UPDATE Illinois SET touched_run_id = <%= @run_id %>, updated_at = CURRENT_TIMESTAMP WHERE touched_run_id <> <%= @run_id %> AND deleted <> 1;
+TRUNCATE Illinois_tmp;

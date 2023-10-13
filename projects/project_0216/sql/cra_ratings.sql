@@ -1,0 +1,31 @@
+CREATE TABLE `cra_ratings`
+(
+  `id`                        BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+  `cra_id`                    BIGINT(20),
+  `regulator`                 BIGINT(20),
+  `exam_date`                 Date,
+  `bank_name`                 VARCHAR (255),
+  `clean_bank_name`           VARCHAR (255),
+  `old_clean`                 INT(11),
+  `bank_name_for_headline`    VARCHAR (255),
+  `bank_name_for_body_with_state`  VARCHAR (255),
+  `bank_name_for_matchig`     VARCHAR (255),
+  `aliases`                   VARCHAR (255),      
+  `city`                      VARCHAR (255),
+  `state`                     VARCHAR (255),
+  `assest_size`               BIGINT(20),
+  `exam_method`               BIGINT(20),
+  `rating`                    BIGINT(20),
+  `scrape_dev_name`           VARCHAR(255)      DEFAULT 'Aqeel',
+  `data_source_url`           VARCHAR(255)      DEFAULT 'https://www.ffiec.gov/craratings/craratng.zip',
+  `created_at`                DATETIME          DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`                DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `expected_scrape_frequency` VARCHAR(255) DEFAULT 'Yearly',
+  `dataset_name_prefix`       varchar(255) DEFAULT 'cra_ratings_data',
+  `scrape_status`             varchar(255) DEFAULT 'Live',
+  `pl_gather_task_id`         VARCHAR(255) DEFAULT NULL,
+  `md5_hash`                  varchar(255) GENERATED ALWAYS AS (md5(CONCAT_WS('', CAST(cra_id as CHAR), CAST(regulator as CHAR), CAST(exam_date as CHAR), bank_name, city, state, CAST(assest_size as CHAR), CAST(exam_method as CHAR), CAST(rating as CHAR)))) STORED,
+  `run_id`                    INT,
+  UNIQUE KEY `md5` (`md5_hash`)
+)DEFAULT CHARSET = `utf8mb4`
+  COLLATE = utf8mb4_unicode_520_ci;

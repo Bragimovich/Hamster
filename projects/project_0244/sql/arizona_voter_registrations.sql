@@ -1,0 +1,32 @@
+CREATE TABLE `arizona_voter_registrations`
+(
+  `id`                        BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+  `run_id`                    BIGINT(20),
+  `link`                      VARCHAR (255),
+  `month`                     VARCHAR (255),
+  `day`                       VARCHAR (255),
+  `year`                      VARCHAR (255),
+  `county`                    VARCHAR (255),
+  `precinct`                  VARCHAR (255),
+  `date_period`               VARCHAR (255),
+  `democratic`                VARCHAR (255),
+  `green`                     VARCHAR (255),
+  `libertarian`               VARCHAR (255),
+  `republican`                VARCHAR (255),
+  `other`                     VARCHAR (255),
+  `total`                     VARCHAR (255),
+  `scrape_dev_name`           VARCHAR(255)      DEFAULT 'Aqeel',
+  `data_source_url`           VARCHAR(255)      DEFAULT 'https://azsos.gov/elections/voter-registration-historical-election-data/voter-registration-counts',
+  `created_at`                DATETIME          DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`                DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `scrape_frequency`          VARCHAR(255) DEFAULT 'monthly',
+  `last_scrape_date`          Date,
+  `next_scrape_date`          Date,
+  `expected_scrape_frequency` VARCHAR(255) DEFAULT 'monthly',
+  `dataset_name_prefix`       varchar(255) DEFAULT 'arizona_voter_registrations',
+  `scrape_status`             varchar(255) DEFAULT 'Live',
+  `pl_gather_task_id`         varchar(255) DEFAULT '8684',
+  `md5_hash`                  varchar(100) GENERATED ALWAYS AS (md5(CONCAT_WS('', month, day, year, county, precinct, date_period, democratic, green, libertarian, republican, other, total))) STORED,
+  UNIQUE KEY `md5` (`md5_hash`)
+)DEFAULT CHARSET = `utf8mb4`
+  COLLATE = utf8mb4_unicode_520_ci;

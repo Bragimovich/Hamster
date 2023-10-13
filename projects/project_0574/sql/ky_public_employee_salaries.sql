@@ -1,0 +1,32 @@
+create table `ky_public_employee_salaries`
+(
+  `id`                    bigint(20) auto_increment   primary key,
+  `state`                  VARCHAR(255),
+  `year`                  VARCHAR(255),
+  `full_name`               varchar(255),
+  `first_name`                  VARCHAR(255),
+  `middle_name`                  VARCHAR(255),
+  `last_name`                  VARCHAR(255),
+  `branch`         VARCHAR(255),
+  `cabinet`         VARCHAR(255),
+  `title`         VARCHAR(255),
+  `department`         VARCHAR(255),
+  `salary`         decimal(65,2),
+  `last_scrape_date`      Date,
+  `next_scrape_date`      Date,
+  `md5_hash`                  varchar(255) GENERATED ALWAYS AS (md5(CONCAT_WS('', full_name, first_name, middle_name, last_name, branch, cabinet, title, department, salary))) STORED,
+  `run_id`                 int,
+  `data_response_source`         VARCHAR(255) DEFAULT "https://secure.kentucky.gov//TransparencyWebApi/v1/Salary?dataGroupViewName=Individual&dataGroupViewCode=5&branchCode=&firstname=&lastname=&beginSalaryRange=&endSalaryRange=&title=&department=&cabinet=&maximumRows=100&startRowIndex=0",
+  `data_source_url`           VARCHAR(255)  DEFAULT 'https://transparency.ky.gov/search/Pages/SalarySearch.aspx#/salary',
+  `created_by`           VARCHAR(255)       DEFAULT 'Adeel',
+  `scrape_dev_name`           VARCHAR(255)       DEFAULT 'Adeel',
+  `scrape_frequency`     varchar(255)       DEFAULT 'Yearly',
+  `expected_scrape_frequency` varchar(255)  DEFAULT 'Yearly',
+  `dataset_name_prefix`      varchar(255)       DEFAULT "ky_public_employee_salaries",
+  `scrape_status`        varchar(255)       DEFAULT "Live",
+  `pl_gather_task_ID`     bigint(20)        DEFAULT "167978965",
+  `created_at`           TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `unique_data` (`md5_hash`)
+)DEFAULT CHARSET = `utf8mb4`
+COLLATE = utf8mb4_unicode_520_ci;

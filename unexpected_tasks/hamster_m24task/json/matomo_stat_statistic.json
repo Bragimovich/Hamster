@@ -1,0 +1,14 @@
+{
+  "name": "matomo_stat",
+  "tables": [
+    { "name": "stat", "columns": [
+      { "name": "idsite", "dataType": "int64" },
+      { "name": "profile_url", "dataType": "string" },
+      { "name": "stat_date", "dataType": "datetime" },
+      { "name": "pageviews", "dataType": "int64" },
+      { "name": "users", "dataType": "int64" },
+      { "name": "sessions", "dataType": "int64" },
+      { "name": "avgTime", "dataType": "double" }
+    ]}
+  ]
+}

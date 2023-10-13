@@ -1,0 +1,30 @@
+create table kansas_campaign_finance_contributors
+(
+    id                        bigint auto_increment
+        primary key,
+    candidate_name            varchar(255)                             null,
+    contributor               varchar(255)                             null,
+    address                   varchar(255)                             null,
+    address_2                 varchar(255)                             null,
+    city                      varchar(255)                             null,
+    state                     varchar(255)                             null,
+    zip                       varchar(20)                              null,
+    occupation                varchar(255)                             null,
+    industry                  varchar(255)                             null,
+    date                      date                                     null,
+    type_of_tender            varchar(255)                             null,
+    amount                    decimal(10, 2) default 0.00              null,
+    kind_amount               decimal(10, 2) default 0.00              null,
+    kind_description          varchar(255)                             null,
+    start_date                date                                     null,
+    end_date                  date                                     null,
+    scrape_dev_name           varchar(255)                             null,
+    created_at                datetime                                 null,
+    updated_at                timestamp      default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
+    last_scrape_date          date                                     null,
+    next_scrape_date          date                                     null,
+    expected_scrape_frequency varchar(255)                             null,
+    scrape_status             varchar(255)                             null,
+    pl_gather_task_id         varchar(255)                             null,
+    run_id                    int                                      null
+);

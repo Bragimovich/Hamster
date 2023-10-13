@@ -1,0 +1,26 @@
+create table `wa_saac_case_info`(
+  `id` BIGINT(20) AUTO_INCREMENT,
+  `court_id` int,
+  `case_id` varchar(200),
+  `case_name` text,
+  `case_filed_date` date,
+  `case_type` varchar(200),
+  `case_description` varchar(400),
+  `disposition_or_status` varchar(400),
+  `status_as_of_date` varchar(400),
+  `judge_name` text,
+  `lower_court_id` int,
+  `lower_case_id` varchar(200),
+  `year` VARCHAR(200),
+  `created_by`  VARCHAR(255) default 'Abdur Rehman',
+  `created_at`  DATETIME default CURRENT_TIMESTAMP,
+  `updated_at`  TIMESTAMP NOT NULL default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `data_source_url` TEXT,
+  `run_id`  BIGINT,
+  `touched_run_id` BIGINT(20), 
+  `deleted` BOOLEAN  default 0,
+  `md5_hash`  VARCHAR(255),
+  UNIQUE KEY `unique_data` (`court_id`,`case_id`),
+  KEY `id` (`id`)
+) default CHARSET = `utf8mb4`
+  COLLATE = utf8mb4_unicode_520_ci;

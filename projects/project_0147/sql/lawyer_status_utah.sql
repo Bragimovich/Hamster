@@ -1,0 +1,31 @@
+create table `utah`
+(
+  `id`                   int auto_increment   primary key,
+  `bar_number`           VARCHAR(255),
+  `name`                 VARCHAR(255),
+  `name_prefix`        VARCHAR(255),
+  `first_name`              VARCHAR(255),
+  `middle_name`               VARCHAR(255),
+  `last_name`             VARCHAR(255),
+  `law_firm_name`             VARCHAR(255),
+  `law_firm_address`             VARCHAR(255),
+  `law_firm_city`             VARCHAR(255),
+  `law_firm_zip`             VARCHAR(255),
+  `law_firm_state`             VARCHAR(255),
+  `country`           VARCHAR(255),
+  `phone`             VARCHAR(255),
+  `email`             VARCHAR(255),
+  `type`             VARCHAR(255),
+  `status`            VARCHAR(255),
+  `law_school`        VARCHAR(255),
+  `date_admitted`       date,
+  `run_id`            INT,
+  `md5_hash`          VARCHAR(255),
+  `link`                 VARCHAR(255),
+  `data_source_url`      VARCHAR(255),
+  `created_by`           VARCHAR(255)       DEFAULT 'Adeel',
+  `created_at`           DATETIME           DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `unique_data` (`link`)
+)DEFAULT CHARSET = `utf8mb4`
+  COLLATE = utf8mb4_unicode_520_ci;

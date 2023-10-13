@@ -1,0 +1,22 @@
+CREATE TABLE `us_case_pdf_on_aws` (
+                                      `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                                      `court_id` smallint(6) DEFAULT NULL,
+                                      `case_id` varchar(100) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+                                      `source_type` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+                                      `aws_link` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+                                      `source_link` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+                                      `aws__html_link` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+                                      `md5_hash` varchar(32) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+                                      `created_by` varchar(20) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+                                      `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+                                      `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                      `data_source_url` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+                                      `run_id` bigint(20) DEFAULT NULL,
+                                      `touched_run_id` bigint(20) DEFAULT NULL,
+                                      `deleted` tinyint(1) DEFAULT '0',
+                                      PRIMARY KEY (`id`),
+                                      UNIQUE KEY `md5` (`md5_hash`),
+                                      KEY `case_id` (`case_id`),
+                                      KEY `court_id` (`court_id`),
+                                      KEY `deleted` (`deleted`)
+) ENGINE=InnoDB AUTO_INCREMENT=200265 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;

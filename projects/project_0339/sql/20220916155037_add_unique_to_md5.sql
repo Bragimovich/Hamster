@@ -1,0 +1,1 @@
+ALTER TABLE north_carolina_business_licenses ADD CONSTRAINT md5_unique UNIQUE (md5);

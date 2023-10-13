@@ -1,0 +1,7 @@
+TRUNCATE table congressional_legislation_actions;
+TRUNCATE table congressional_legislation_actions_overview;
+TRUNCATE table congressional_legislation_texts;
+TRUNCATE table congressional_legislation_info;
+TRUNCATE table congressional_legislation_committees;
+TRUNCATE table congressional_legislation_cosponsors;
+TRUNCATE table congressional_legislation_related_bills;

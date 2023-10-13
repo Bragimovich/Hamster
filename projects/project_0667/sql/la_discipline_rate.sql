@@ -1,0 +1,32 @@
+CREATE TABLE la_discipline_rate (
+  `id` 					  BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+  `general_id` 		bigint(20),
+  `school_year`                      VARCHAR(50),
+  `cumulative_enrollment`            VARCHAR(255),
+  `in_school_suspension_count`       VARCHAR(255),
+  `in_school_suspension_rate`        VARCHAR(255),
+  `out_school_suspension_count`      VARCHAR(255),
+  `out_school_suspension_rate`       VARCHAR(255),
+  `in_school_expulsion_count`        VARCHAR(255),
+  `in_school_expulsion_rate`         VARCHAR(255),
+  `out_school_expulsion_count`       VARCHAR(255),
+  `out_school_expulsion_rate`        VARCHAR(255),
+  `alternative_suspension_count`     VARCHAR(255),
+  `alternative_suspension_rate`      VARCHAR(255),
+  `alternative_expulsion_count`      VARCHAR(255),
+  `alternative_expulsion_rate`       VARCHAR(255),
+  `data_source_url` 	VARCHAR(255),
+  `created_by`     		VARCHAR(255)      DEFAULT 'Muhammad Musa',
+  `created_at`      	DATETIME          DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`      	DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `run_id`          	BIGINT(20),
+  `touched_run_id`  	BIGINT(20),
+  `deleted`         	BOOLEAN           DEFAULT 0,
+  `md5_hash`        	VARCHAR(255),
+  UNIQUE KEY        	`md5` (`md5_hash`),
+  INDEX             	`run_id` (`run_id`),
+  INDEX             	`touched_run_id` (`touched_run_id`),
+  INDEX             	`deleted` (`deleted`)
+)   DEFAULT CHARSET = `utf8mb4`
+    COLLATE = utf8mb4_unicode_520_ci
+    COMMENT = 'Created by Muhammad Musa, Task #667';

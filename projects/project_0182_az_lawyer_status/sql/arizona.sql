@@ -1,0 +1,35 @@
+  create table `arizona`
+(
+  `id`                   int auto_increment   primary key,
+  `run_id`          BIGINT(20),
+  `name`           VARCHAR(255),
+  `law_firm_name`           VARCHAR(255),
+  `law_firm_address`           VARCHAR(255),
+  `law_firm_county`           VARCHAR(255),
+  `law_firm_state`           VARCHAR(255),
+  `law_firm_city`         VARCHAR(255),
+  `phone`           VARCHAR(255),
+  `email`           VARCHAR(255),
+  `website`         VARCHAR(255), 
+  `attorney_type`           VARCHAR(255),
+  `registration_status`   VARCHAR(255),
+  `date_admitted`       date,
+  `typical_hourly_rate` INT,
+  `typical_fixed_fee` INT,
+  `typical_contingency_fee` VARCHAR(255),
+  `jurisdiction`       text,
+  `sections`           text,
+  `data_source_url`           VARCHAR(255),
+  `created_by`           VARCHAR(255)       DEFAULT 'Aqeel',
+  `created_at`           DATETIME           DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `touched_run_id`  BIGINT,
+  `deleted`         BOOLEAN           DEFAULT 0,
+  `md5_hash`        VARCHAR(255),
+  UNIQUE KEY `md5` (`md5_hash`),
+  INDEX `run_id` (`run_id`),
+  INDEX `touched_run_id` (`touched_run_id`),
+  INDEX `deleted` (`deleted`)
+) DEFAULT CHARSET = `utf8mb4`
+  COLLATE = utf8mb4_unicode_520_ci
+    COMMENT = 'The Scrape made by Aqeel';

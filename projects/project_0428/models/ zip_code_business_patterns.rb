@@ -1,0 +1,5 @@
+class ZipCodeBusinessPatterns < ActiveRecord::Base
+  establish_connection(Storage[host: :db01, db: :usa_raw])
+  self.table_name = 'zip_code_business_patterns'
+  self.inheritance_column = :_type_disabled
+end

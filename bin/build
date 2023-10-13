@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+help="
+Usage: hamster build
+   or: hamster build help
+
+Builds or updates the Hamster docker image."
+
+if [[ $1 == help ]] ; then
+  echo "$help"
+
+  exit 0
+fi
+
+docker volume create hamster_vol_storage
+docker volume create hamster_vol_history
+
+version=$(cat ${project_location}docker/VERSION)
+target_file=${project_location}docker/hamster.dockerfile
+docker_tag="hamster:v$version"
+
+docker build --file $target_file --tag $docker_tag .
+
+exit 0
+

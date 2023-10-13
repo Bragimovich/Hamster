@@ -1,0 +1,30 @@
+CREATE TABLE `us_dept_ctoac`
+(
+  `id`              BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+  `run_id`          BIGINT(20),
+  `title`           VARCHAR(255),
+  `subtitle`        VARCHAR(255),
+  `teaser`          TEXT,
+  `article`         LONGTEXT,
+  `link`            VARCHAR(500),
+  `creator`         VARCHAR(255)      DEFAULT 'California Tax Credit Allocation Committee',
+  `type`            VARCHAR(255)      DEFAULT 'press release',
+  `county`          VARCHAR(255)      DEFAULT 'US',
+  `date`            DATETIME,
+  `release_no`      VARCHAR(255),
+  `contact_info`    TEXT,
+  `dirty_news`      BOOLEAN           DEFAULT 0,
+  `with_table`      BOOLEAN           DEFAULT 0,
+  `data_source_url` TEXT              DEFAULT 'https://www.treasurer.ca.gov/news/releases/2022/index.asp',
+  `created_by`      VARCHAR(255)      DEFAULT 'Igor Sas',
+  `created_at`      DATETIME          DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `touched_run_id`  BIGINT,
+  `deleted`         BOOLEAN           DEFAULT 0,
+  `md5_hash`        VARCHAR(255),
+  UNIQUE KEY `md5` (`md5_hash`),
+  INDEX `run_id` (`run_id`),
+  INDEX `touched_run_id` (`touched_run_id`),
+  INDEX `deleted` (`deleted`)
+) DEFAULT CHARSET = `utf8mb4`
+  COLLATE = utf8mb4_unicode_520_ci;

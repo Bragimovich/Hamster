@@ -1,0 +1,28 @@
+CREATE TABLE `milb_games`
+(
+  `id`               BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+  `mlb_id`           BIGINT,
+  `mlb_home_team_id` BIGINT,
+  `mlb_away_team_id` BIGINT,
+  `home_team_score`  INT,
+  `away_team_score`  INT,
+  `home_rec_after`   VARCHAR(255),
+  `away_rec_after`   VARCHAR(255),
+  `game_datetime`    DATETIME,
+  `makeup_date`      DATE,
+  `add_info`         VARCHAR(255),
+  `day_game_number`  INT,
+  `venue_name`       VARCHAR(255),
+  `venue_address`    VARCHAR(255),
+  `venue_city`       VARCHAR(255),
+  `venue_zip`        VARCHAR(255),
+  `venue_state`      VARCHAR(255),
+  `venue_timezone`   VARCHAR(255),
+  `venue_tz_abbr`    VARCHAR(255),
+  `data_source_url`  TEXT,
+  `created_by`       VARCHAR(255)      DEFAULT 'Ray Piao',
+  `created_at`       DATETIME          DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `md5_hash`         VARCHAR(255),
+  UNIQUE KEY `md5` (`md5_hash`)
+) DEFAULT CHARSET = `utf8mb4` COLLATE = utf8mb4_unicode_520_ci COMMENT = 'The Scrape made by Ray Piao';

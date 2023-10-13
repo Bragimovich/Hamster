@@ -1,0 +1,129 @@
+constants:
+  common_source: 'https://www.ark.org/dfa/transparency/employee_compensation.php'
+  state: AR
+
+db_host: db01
+
+source_db: state_salaries__raw
+target_db: public_employees_salaries_staging
+
+raw_datasets:
+  raw_dataset_location: db01.state_salaries__raw
+  raw_dataset_prefix: 'ar_employee_salaries%'
+  data_source_name: 'Transparency.Arkansas.gov Employee Salaries'
+  data_gather_method: Scrape
+  data_source_url: "@common_source"
+
+raw_dataset_tables:
+  table_name: ar_employee_salaries
+
+compensation_types:
+  -
+    raw_compensation_type: 'Annual Salary'
+    compensation_type: 'Annual Salary'
+
+source_main_table:
+  name: ar_employee_salaries
+  filters:
+    - "deleted <> 1"
+    - "agency not regexp('school|academy|institute|college|university of|university|univers')"
+  includes: []
+
+source_table_joins:
+  -
+    left: ar_employee_salaries
+    right: ar_employee_salaries__agencies_clean
+    column_mappings:
+      -
+        left: agency
+        right: agency
+  -
+    left: ar_employee_salaries
+    right: ar_employee_salaries__position_titles_clean
+    column_mappings:
+      -
+        left: position_title
+        right: position_title
+  -
+    left: ar_employee_salaries
+    right: ar_employee_salaries__names_clean
+    column_mappings:
+      -
+        left: employee_name
+        right: employee_name
+
+data_fields:
+  - name: record_id
+    column: id
+  - name: fiscal_year
+  - name: employee_name
+  - name: agency
+  - name: position_title
+  - name: gender
+  - name: race
+  - name: annual_salary
+  - name: data_source_url
+  - name: agency_clean_id
+    table: ar_employee_salaries__agencies_clean
+    column: id
+  - name: agency_clean
+    table: ar_employee_salaries__agencies_clean
+    column: agency_clean
+  - name: job_title_clean_id
+    table: ar_employee_salaries__position_titles_clean
+    column: id
+  - name: job_title_clean
+    table: ar_employee_salaries__position_titles_clean
+    column: position_title_clean
+  - name: name_clean_id
+    table: ar_employee_salaries__names_clean
+    column: id
+  - name: name_clean
+    table: ar_employee_salaries__names_clean
+    column: employee_name_clean
+  - name: first_name
+    table: ar_employee_salaries__names_clean
+    column: first_name
+  - name: middle_name
+    table: ar_employee_salaries__names_clean
+    column: middle_name
+  - name: last_name
+    table: ar_employee_salaries__names_clean
+    column: last_name
+  - name: suffix
+    table: ar_employee_salaries__names_clean
+    column: suffix
+
+md5_fields:
+  agency:
+    - agency
+    - "@common_source"
+  employee:
+    - employee_name
+    - race
+    - gender
+    - "@common_source"
+
+target_mappings:
+  agencies:
+    raw_agency_name: agency
+    clean_id: agency_clean_id
+    agency_name: agency_clean
+    data_source_url: "@common_source"
+
+  job_titles:
+    raw_job_title: position_title
+    clean_id: job_title_clean_id
+    job_title: job_title_clean
+
+  employees:
+    clean_id: name_clean_id
+    full_name: name_clean
+    first_name: first_name
+    middle_name: middle_name
+    last_name: last_name
+    suffix: suffix
+    race: race
+    gender: gender
+    state: "@state"
+    data_source_url: "@common_source"

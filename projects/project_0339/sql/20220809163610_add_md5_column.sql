@@ -1,0 +1,1 @@
+ALTER TABLE north_carolina_business_licenses ADD COLUMN `md5` varchar(100) NOT NULL;

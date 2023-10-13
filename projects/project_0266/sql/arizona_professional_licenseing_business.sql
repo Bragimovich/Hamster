@@ -1,0 +1,32 @@
+CREATE TABLE `arizona_professional_licenseing_business`
+(
+  `id`                                            BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+  `run_id`                                        int,
+  `license_type`                                  VARCHAR(255),
+  `license_number`                                VARCHAR(255),
+  `board`                                         VARCHAR (255),
+  `issue_date`                                    DATE,
+  `license_expiration_date`                       DATE,
+  `status`                                        VARCHAR (255),
+  `business_name`                                 VARCHAR (255),
+  `street`                                        VARCHAR (255),
+  `city`                                          VARCHAR (255),
+  `state`                                         VARCHAR (255),
+  `phone`                                         VARCHAR(255),
+  `zip`                                           VARCHAR (255),
+  `link`                                          VARCHAR (255),
+  `scrape_dev_name`                               VARCHAR(255) DEFAULT 'Adeel',
+  `data_source_url`                               VARCHAR(255) DEFAULT 'https://elicense.az.gov/ARDC_LicenseSearch',
+  `scrape_frequency`                              VARCHAR(255) DEFAULT 'Weekly',
+  `last_scrape_date`                              DATE,
+  `next_scrape_date`                              DATE,
+  `dataset_name_prefix`                           VARCHAR(255) DEFAULT 'arizona_professional_licenseing',
+  `scrape_status`                                 VARCHAR(255) DEFAULT 'Live',
+  `pl_gather_task_id`                             int DEFAULT 170327094,
+  `md5_hash`                                      VARCHAR (255)GENERATED ALWAYS AS (md5(concat_ws('',license_type,license_expiration_date,status,business_name,street,city,state,phone,zip))) STORED,
+  `deleted`                                       int DEFAULT 0,
+  `created_at`                                    DATETIME           DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`                                    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `md5_hash_key` (`md5_hash`)
+) DEFAULT CHARSET = `utf8mb4`
+  COLLATE = utf8mb4_unicode_520_ci;

@@ -1,0 +1,1 @@
+ALTER TABLE AZ_school_AzMERIT_and_MSAA_scores CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;

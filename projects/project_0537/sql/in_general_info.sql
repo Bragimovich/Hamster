@@ -1,0 +1,35 @@
+CREATE TABLE us_schools_raw.in_general_info
+(
+    id	            BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+    is_district	    TINYINT(1),
+    district_id	    BIGINT(20),
+    number	        VARCHAR(50),
+    name	        VARCHAR(255),
+    nces_id	        VARCHAR(50),
+    type	        VARCHAR(255),
+    low_grage	    VARCHAR(255),
+    high_grade	    VARCHAR(255),
+    locale	        VARCHAR(255),
+    phone	        VARCHAR(255),
+    fax	            VARCHAR(255),
+    website	        VARCHAR(255),
+    address	        VARCHAR(255),
+    city	        VARCHAR(255),
+    county	        VARCHAR(255),
+    state	        VARCHAR(255),
+    zip	            VARCHAR(255),
+    created_by      VARCHAR(255)      DEFAULT 'Danil Kurshanov',
+    created_at      DATETIME          DEFAULT CURRENT_TIMESTAMP,
+    updated_at      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    data_source_url VARCHAR(255)      DEFAULT 'https://www.in.gov/doe/it/data-center-and-reports/',
+    run_id          BIGINT(20),
+    touched_run_id  BIGINT,
+    deleted         BOOLEAN           DEFAULT 0,
+    md5_hash        VARCHAR(255),
+    UNIQUE KEY        md5 (md5_hash),
+    INDEX             run_id (run_id),
+    INDEX             touched_run_id (touched_run_id),
+    INDEX             deleted (deleted)
+)   DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_unicode_520_ci
+    COMMENT = 'Table for task #537. Made by dkurshnov.';

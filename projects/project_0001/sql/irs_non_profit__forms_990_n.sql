@@ -1,0 +1,43 @@
+create table woke_project.irs_non_profit__forms_990_n
+(
+    `id`                        BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+
+    `ein`                       VARCHAR(9)         DEFAULT NULL,
+    `tax_period`                VARCHAR(4)         DEFAULT NULL,
+    org_name                    VARCHAR(255)       DEFAULT NULL,
+    `gross_receipts_not_greater_than_50000` VARCHAR(1)   DEFAULT NULL,
+    `organization_terminated`   tinyint(1)         not null default 0,
+    `tax_period_start`          DATE               DEFAULT NULL,
+    `tax_period_end`            DATE               DEFAULT NULL,
+    `website_url`               varchar(300)       DEFAULT NULL,
+    `principal_officer_name`    varchar(200)       DEFAULT NULL,
+    `principal_officer_street1` varchar(200)       DEFAULT NULL,
+    `principal_officer_street2` varchar(200)       DEFAULT NULL,
+    `principal_officer_city`    varchar(100)       DEFAULT NULL,
+    `principal_officer_area`    varchar(200)       DEFAULT NULL,
+    `principal_officer_state`   varchar(30)        DEFAULT NULL,
+    `principal_officer_zip`     varchar(15)        DEFAULT NULL,
+    principal_officer_country   varchar(200)       DEFAULT NULL,
+    `mailing_address_street1`   varchar(200)       DEFAULT NULL,
+    `mailing_address_street2`   varchar(200)       DEFAULT NULL,
+    `mailing_address_city`      varchar(100)       DEFAULT NULL,
+    `mailing_address_area`      varchar(200)       DEFAULT NULL,
+    `mailing_address_state`     varchar(30)        DEFAULT NULL,
+    `mailing_address_zip`       varchar(100)       DEFAULT NULL,
+    mailing_address_country     varchar(200)       DEFAULT NULL,
+    org_parens                  varchar(1000)      DEFAULT NULL,
+    `org_other_name2`           varchar(255)       DEFAULT NULL,
+    `org_other_name3`           varchar(255)       DEFAULT NULL,
+
+    `data_source_url`          VARCHAR(255)       DEFAULT NULL,
+    `md5_hash`                 VARCHAR(32)        DEFAULT NULL,
+    `run_id`                   BIGINT(20),
+    `deleted`                  TINYINT(1)         DEFAULT 0,
+    `created_by`               VARCHAR(20)        DEFAULT 'Eldar Eminov',
+    `created_at`               DATETIME           DEFAULT CURRENT_TIMESTAMP,
+    `updated_at`               TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY `md5` (`md5_hash`),
+    INDEX `ein` (`ein`),
+    INDEX `deleted` (`deleted`)
+) DEFAULT CHARSET = `utf8mb4`
+  COLLATE = utf8mb4_unicode_520_ci;

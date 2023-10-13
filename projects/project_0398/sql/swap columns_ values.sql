@@ -1,0 +1,2 @@
+use us_court_cases;
+UPDATE ca_saac_case_info s1, ca_saac_case_info s2 SET s1.disposition_or_status=s1.status_as_of_date, s1.status_as_of_date=s2.disposition_or_status WHERE s1.id=s2.id AND s1.id > 6028;

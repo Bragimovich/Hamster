@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+project_location=$(cat $HOME/.config/hamster/local.path)
+
+docker run \
+  --mount src=$HOME/ini/Hamster,dst='/home/hamster/ini/Hamster',type=bind \
+  --mount src=$HOME/HarvestStorehouse,dst='/home/hamster/HarvestStorehouse',type=bind \
+  --mount src=$project_location,dst='/home/hamster/Hamster',type=bind \
+  --rm -it --name hamster hamster:v$(cat $project_location/docker/VERSION) \
+  ruby hamster.rb --telegram
+
+exit 0
+

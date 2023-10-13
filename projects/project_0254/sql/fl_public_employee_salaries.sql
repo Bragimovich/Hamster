@@ -1,0 +1,36 @@
+CREATE TABLE `fl_public_employee_salaries`
+(
+  `id`                BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+  `run_id`            BIGINT(20),
+  `year`              VARCHAR (255),
+  `agency`            VARCHAR (255),
+  `budget_entity`     VARCHAR (255),
+  `position_num`      VARCHAR (255),
+  `last_name`         VARCHAR (255),
+  `first_name`        VARCHAR (255),
+  `middle_name`       VARCHAR (255),
+  `employee_type`     VARCHAR (255),
+  `full_or_part_time` VARCHAR (255),
+  `class_code`        VARCHAR (255),
+  `class_title`       VARCHAR (255),
+  `state_hire_date`   DATE    (255),
+  `annual_salary`     NUMERIC(255,2),
+  `ops_hourly_rate`   NUMERIC(255,2),
+  `data_source_url`   TEXT,
+  `file_name`         VARCHAR(255),
+  `created_by`        VARCHAR(255)      DEFAULT 'Aqeel',
+  `created_at`        DATETIME          DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `scrape_frequency`          VARCHAR(255) DEFAULT  'yearly',
+  `last_scrape_date`          date,
+  `next_scrape_date`          date,
+  `expected_scrape_frequency` VARCHAR(255) DEFAULT  'yearly',
+  `dataset_name_prefix`       VARCHAR(255) DEFAULT  'fl_public_employee_salaries',
+  `scrape_status`             VARCHAR(255) DEFAULT  'Live',
+  `pl_gather_task_id`         BIGINT(20)   DEFAULT  '167471415',
+  `md5_hash`          VARCHAR(255) GENERATED ALWAYS AS (md5(concat_ws('',year,agency,budget_entity,position_num,last_name,first_name,middle_name,employee_type,full_or_part_time,class_code,class_title,state_hire_date,annual_salary,ops_hourly_rate))) STORED,
+  UNIQUE KEY `md5` (`md5_hash`),
+  INDEX `run_id` (`run_id`)
+) DEFAULT CHARSET = `utf8mb4`
+  COLLATE = utf8mb4_unicode_520_ci
+    COMMENT = 'The Scrape made by ';

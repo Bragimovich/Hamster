@@ -1,0 +1,32 @@
+create table `mi_higher_education_salaries`
+(
+  `id`                    bigint(20) auto_increment   primary key,
+  `run_id`                 int,
+  `touched_run_id`        int,
+  `year`                  int,
+  `state`                  VARCHAR(255) DEFAULT 'Michigan',
+  `full_name`                  VARCHAR(255),
+  `first_name`                  VARCHAR(255),
+  `middle_name`                  VARCHAR(255),
+  `last_name`                  VARCHAR(255),
+  `job`           VARCHAR(255),
+  `employer`           VARCHAR(255),
+  `department`           VARCHAR(255) DEFAULT NULL,
+  `employment_type`           VARCHAR(255) DEFAULT NULL,
+  `salary`           decimal(10,2),
+  `md5_hash`                  VARCHAR(255),
+  `data_source_url`           VARCHAR(255)  DEFAULT NULL,
+  `scrape_dev_name`           VARCHAR(255)       DEFAULT 'Aqeel',
+  `scrape_frequency`     varchar(255)       DEFAULT 'Yearly',
+  `expected_scrape_frequency`     varchar(255)       DEFAULT 'Yearly',
+  `last_scrape_date`     date,
+  `next_scrape_date`     date,
+  `dataset_name_prefix`        varchar(255)       DEFAULT "mmichigan_public_employee_salary",
+  `scrape_status`        varchar(255)       DEFAULT "Live",
+  `deleted`        boolean       DEFAULT 0,
+  `pl_gather_task_ID`     bigint(20)        DEFAULT "167325881",
+  `created_at`           TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `unique_data` (`md5_hash`)
+)DEFAULT CHARSET = `utf8mb4`
+  COLLATE = utf8mb4_unicode_520_ci;

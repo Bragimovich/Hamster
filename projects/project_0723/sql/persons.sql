@@ -1,0 +1,23 @@
+CREATE TABLE `persons`(
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `run_id` BIGINT UNSIGNED NULL,
+  `full_name` VARCHAR(100) NOT NULL,
+  `last_name` VARCHAR(255) NULL,
+  `first_name` VARCHAR(255) NULL,
+  `section` VARCHAR(255) NULL,
+  `vacation` VARCHAR(255) NULL,
+  `school_id` BIGINT NULL,
+  `ex_school_name` VARCHAR(255) NULL,
+  `contact_id` BIGINT NULL,
+  `touched_run_id` INT NULL,
+  `data_source_url` VARCHAR(100) NOT NULL,
+  `created_by` VARCHAR(255) DEFAULT "Muhammad Qasim",
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `md5_hash` VARCHAR(100) GENERATED ALWAYS AS (md5(CONCAT_WS('', contact_id, school_id, full_name, section, vacation, data_source_url))) STORED,
+  UNIQUE KEY `md5` (`md5_hash`),
+  INDEX `run_id` (`run_id`),
+  INDEX `touched_run_id` (`touched_run_id`),
+  PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

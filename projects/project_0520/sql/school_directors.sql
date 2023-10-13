@@ -1,0 +1,22 @@
+create TABLE ihsa_schools__directors(
+  id BIGINT auto_increment PRIMARY KEY,
+  year  int,
+  school_id int,
+  division_id int,
+  title  VARCHAR(255),
+  full_name  VARCHAR(255),
+  first_name  VARCHAR(255),
+  middle_name  VARCHAR(255),
+  last_name  VARCHAR(255),
+  email  VARCHAR(255),
+  phone_number  VARCHAR(255),
+  run_id  BIGINT(20),
+  data_source_url TEXT,
+  created_by      VARCHAR(255)      DEFAULT 'Abdur Rehman',
+  created_at      DATETIME          DEFAULT CURRENT_TIMESTAMP,
+  updated_at      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  touched_run_id  BIGINT,
+  deleted         BOOLEAN           DEFAULT 0,
+  md5_hash        VARCHAR(255),
+  UNIQUE KEY md5 (md5_hash)
+);

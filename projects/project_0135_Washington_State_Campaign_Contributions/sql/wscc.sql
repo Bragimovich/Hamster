@@ -1,0 +1,52 @@
+CREATE TABLE `washington_state_campaign_contributions`
+(
+  `id`              BIGINT(20) AUTO_INCREMENT PRIMARY KEY,
+  `unique_source_id`              BIGINT(20),
+
+  `contributor_full_name`          VARCHAR(255),
+  `contributor_first`            VARCHAR(255),
+  `contributor_middle`          VARCHAR(255),
+  `contributor_last`            VARCHAR(255),
+  `contributor_suffix`          VARCHAR(255),
+  `contributor_full_address`          VARCHAR(255),
+  `contributor_street`          VARCHAR(255) ,
+  `contributor_city`          VARCHAR(255),
+  `contributor_state`          VARCHAR(255),
+  `contributor_zip`          VARCHAR(255),
+  `contributor_sex`          VARCHAR(255),
+  `contributor_job_title`          VARCHAR(255),
+  `contributor_employer`          VARCHAR(255),
+  `contributor_age`          VARCHAR(255),
+  `contributor_birthdate`          VARCHAR(255),
+  `contribution_amount`          VARCHAR(255),
+  `contribution_type`          VARCHAR(255),
+  `contribution_date`          VARCHAR(255),
+  `committee_name`          VARCHAR(255),
+  `committee_party`          VARCHAR(255),
+  `committee_type`          VARCHAR(255),
+  `candidate_full_name`          VARCHAR(255),
+  `candidate_first_name`          VARCHAR(255),
+  `candidate_middle_name`          VARCHAR(255),
+  `candidate_last_name`          VARCHAR(255),
+  `candidate_suffix`          VARCHAR(255),
+  `candidate_full_address`          VARCHAR(255),
+  `candidate_street`          VARCHAR(255),
+  `candidate_city`          VARCHAR(255),
+  `candidate_state`          VARCHAR(255),
+  `candidate_zip`          VARCHAR(255),
+  `candidate_party`          VARCHAR(255),
+  `candidate_office`          VARCHAR(255),
+  `candidate_position_sought`          VARCHAR(255),
+  `source_dataset_prefix`          VARCHAR(255) default 'db01.usa_raw.new_jersey_state_campaign_contributions_csv',
+  `scrape_dev_name`          VARCHAR(255) default 'Maxim G',
+  `state_or_federal`          VARCHAR(255) default 'state',
+  `data_state`              VARCHAR(255) default 'New Jersey',
+
+
+  `data_source_url` VARCHAR(255)       DEFAULT 'https://data.wa.gov/Politics/Contributions-to-Candidates-and-Political-Committe/kv7h-kjye',
+  `created_at`      DATETIME           DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  UNIQUE INDEX KEY `unique_source_id` (`unique_source_id`)
+) DEFAULT CHARSET = `utf8mb4`
+  COLLATE = utf8mb4_unicode_520_ci;

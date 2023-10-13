@@ -1,0 +1,30 @@
+create table gasbuddy_v2_gas_trends
+(
+    id                INT       NOT NULL AUTO_INCREMENT,
+    zip_searched      CHAR(10)  NOT NULL,
+    station_count     INT,
+    area              VARCHAR(255),
+    area_today        DECIMAL(5, 2),
+    area_today_low    DECIMAL(5, 2),
+    area_trend        INT,
+    state             VARCHAR(255),
+    state_today       DECIMAL(5, 2),
+    state_today_low   DECIMAL(5, 2),
+    state_trend       INT,
+    country           VARCHAR(255),
+    country_today     DECIMAL(5, 2),
+    country_today_low DECIMAL(5, 2),
+    country_trend     INT,
+    data_source_url   VARCHAR(255),
+    run_id            BIGINT NULL,
+    touched_run_id    BIGINT NULL,
+    deleted           TINYINT(1) DEFAULT 0 NULL,
+    md5_hash          VARCHAR(255) NULL,
+    created_by        VARCHAR(255)       DEFAULT 'Alim L.',
+    created_at        DATETIME           DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX             `run_id` (`run_id`),
+    INDEX             `touched_run_id` (`touched_run_id`),
+    INDEX             `deleted` (`deleted`)
+) DEFAULT CHARSET = `utf8mb4`
+  COLLATE = utf8mb4_unicode_520_ci;
