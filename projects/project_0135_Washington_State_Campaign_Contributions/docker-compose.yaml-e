@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+
+  project_%NUMBER%:
+    image: hamster-%NUMBER%
+    container_name: project_%NUMBER%
+    environment:
+      - HAMSTER_CONFIG_LOCATION
+      - HAMSTER_PROJECT_LOCATION
+      - HAMSTER_STORAGE_LOCATION
+    volumes:
+      - hamster_config:/home/hamster/ini/Hamster
+      - hamster_storage:/home/hamster/HarvestStorehouse
+      - hamster_project:/home/hamster/Hamster
+    command: /bin/sh -cl "ruby hamster.rb --grab=%NUMBER% %OPTIONS%"
+
+volumes:
+  hamster_project:
+    driver_opts:
+      type: none
+      o: bind
+      device: $HAMSTER_PROJECT_LOCATION
+  hamster_storage:
+    driver_opts:
+      type: none
+      o: bind
+      device: $HAMSTER_STORAGE_LOCATION
+  hamster_config:
+    driver_opts:
+      type: none
+      o: bind
+      device: $HAMSTER_CONFIG_LOCATION
+
